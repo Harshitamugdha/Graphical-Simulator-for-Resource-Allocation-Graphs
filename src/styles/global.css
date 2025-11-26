@@ -1,0 +1,148 @@
+/* src/styles/global.css - tuned cyberpunk theme (higher contrast, centered layout) */
+:root{
+  --bg: #06030a;
+  --panel-dark: rgba(6,6,10,0.995);
+  --panel-2: rgba(12,8,16,0.97);
+  --text: #f6f8ff;
+  --muted: #9da9b4;
+  --accent-pink: #ff4de6;
+  --accent-cyan: #7eefff;
+  --alloc: #2ef1b8;
+  --danger: #ff4b6e;
+  --glass: rgba(255,255,255,0.03);
+  --container-max: 1200px;
+}
+
+/* page baseline */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; background: var(--bg); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:var(--text); }
+
+/* layered background: subtle radial lights to give cyberpunk vibes */
+body {
+  background:
+    radial-gradient(600px 200px at 8% 8%, rgba(126,239,255,0.03), transparent 6%),
+    radial-gradient(700px 260px at 92% 92%, rgba(255,77,230,0.02), transparent 6%),
+    linear-gradient(180deg, #04030a 0%, var(--bg) 40%, #02020a 100%);
+}
+
+/* app shell centers vertically and horizontally */
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 40px);
+  gap: 18px;
+}
+
+/* main container */
+.container {
+  width: min(var(--container-max), 96vw);
+  background: linear-gradient(180deg, var(--panel-dark), var(--panel-2));
+  border-radius: 14px;
+  padding: clamp(18px, 2.2vw, 30px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.03);
+  overflow: hidden;
+}
+
+/* header */
+h1 {
+  margin: 0 0 10px 0;
+  font-size: clamp(20px, 3.4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: var(--text);
+  text-shadow: 0 2px 20px rgba(127,0,255,0.06);
+}
+
+/* control bar */
+.controls {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom: 10px;
+}
+.controls .group { display:flex; gap:10px; align-items:center; }
+
+/* buttons */
+button {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.006));
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+button:hover { transform: translateY(-2px); }
+.btn-primary {
+  background: linear-gradient(90deg, rgba(255,77,230,0.06), rgba(126,239,255,0.04));
+  border-image: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan)) 1;
+}
+
+/* inputs and selects */
+select, input[type="text"], input[type="number"] {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+/* canvas area */
+.canvas-wrap {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.002));
+  border: 1px solid rgba(255,255,255,0.02);
+}
+.canvas-inner {
+  min-height: clamp(360px, 46vh, 640px);
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position: relative;
+}
+
+/* make sure SVG uses full width and doesn't cause scrollbars */
+.canvas-inner svg { display:block; width:100%; height:auto; pointer-events: all; }
+
+/* node labels */
+.node-label, .label { font-weight:700; font-size:13px; fill: var(--text) !important; }
+
+/* alerts */
+.alert { border-radius: 10px; padding: 12px; margin-top: 16px; font-size: 14px; }
+.alert-success { background: linear-gradient(180deg, rgba(46,241,184,0.03), rgba(46,241,184,0.01)); border:1px solid rgba(46,241,184,0.06); color: var(--alloc); }
+.alert-danger { background: linear-gradient(180deg, rgba(255,75,110,0.03), rgba(255,75,110,0.01)); border:1px solid rgba(255,75,110,0.06); color: var(--danger); }
+
+/* Process / Resource table card */
+.pr-card {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* edge visibility helpers (safe overrides) */
+/* these are fallbacks only; GraphCanvas should set base edge attributes inline,
+   but these will help if something strips inline attributes or extensions override them */
+.canvas-inner svg line {
+  shape-rendering: geometricPrecision;
+  stroke-linecap: round;
+}
+
+/* small legend swatches (optional) */
+.legend { display:flex; gap:10px; align-items:center; margin-top:10px; color:var(--muted); }
+.legend .sw { width:14px; height:14px; border-radius:4px; box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+
+/* responsive tweaks */
+@media (max-width: 880px) {
+  .container { padding: 16px; }
+  h1 { font-size: 24px; }
+  .canvas-inner { min-height: 300px; }
+}
